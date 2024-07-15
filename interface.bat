@@ -68,7 +68,7 @@ echo !rquantity[%%x] >> %reqquantity%
 )
 
 echo word file in progress...
-py main.py
+py main.py :: put path of the main.py file 
 echo DONE!
 pause
 )
