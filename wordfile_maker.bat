@@ -13,6 +13,8 @@ for /f "delims=" %%a in (!names!) do (
     set "name[!count!]=%%a"
 )
 
+set /p customername="Customer name: "
+
 set "rcount=1"
 set "totalprice=0"
 
@@ -68,10 +70,11 @@ goto loop
 > %reqquantity% echo.
 > %reqprices% echo.
 for /l %%x in (1,1,!rcount!) do (
-echo !rdata[%%x] >> %reqdata%
+echo !rdata[%%x]! >> %reqdata%
 echo !rprice[%%x]! >> %reqprices%
-echo !rquantity[%%x] >> %reqquantity%
+echo !rquantity[%%x]! >> %reqquantity%
 )
+echo !customername! >> %reqdata%
 
 echo word file in progress...
 py main.py
