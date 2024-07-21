@@ -46,13 +46,38 @@ else:
     # Create a table with 1 header row and 3 data rows, each with 6 columns
     table = doc.add_table(rows=4, cols=6)
 
-    # Define headers and data
-    headers = ["Header 1", "Header 2", "Header 3", "Header 4", "Header 5", "Header 6"]
-    data = [
-        ["Row 1, Col 1", "Row 1, Col 2", "Row 1, Col 3", "Row 1, Col 4", "Row 1, Col 5", "Row 1, Col 6"],
-        ["Row 2, Col 1", "Row 2, Col 2", "Row 2, Col 3", "Row 2, Col 4", "Row 2, Col 5", "Row 2, Col 6"],
-        ["Row 3, Col 1", "Row 3, Col 2", "Row 3, Col 3", "Row 3, Col 4", "Row 3, Col 5", "Row 3, Col 6"]
-    ]
+# Define headers and data
+headers = ["SN", "Model And Describtion", "layout", "Q", "Unit price", "Total price"]
+
+itemList = []
+quantityList = []
+priceList = []
+
+with open('requested-data.txt', 'r') as names:
+    for line in names:
+        itemList.append(line.strip())
+itemList = itemList[1:]
+customerName = itemList[len(itemList)-1]
+itemList = itemList[:-1]
+
+with open('requested-quantity.txt', 'r') as quantity:
+    for line in quantity:
+        quantityList.append(line.strip())
+quantityList = quantityList[1:]
+
+with open('requested-prices.txt', 'r') as prices:
+    for line in prices:
+        priceList.append(line.strip())
+priceList = priceList[1:]
+
+data = []
+totalPrice = 0
+
+for i in range(len(itemList)):
+    dataRow = []
+    totalPrice += quantityList[i] * priceList[i]
+    dataRow.append(i+1, itemList[i], "INSERT PICTURE", quantityList[i], priceList[i], quantityList[i] * priceList[i])
+    data.append(dataRow)
 
     # Populate the header row
     header_row = table.rows[0]
