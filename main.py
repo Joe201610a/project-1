@@ -77,8 +77,8 @@ else:
     
     for i in range(len(itemList)):
         dataRow = []
-        totalPrice += quantityList[i] * priceList[i]
-        dataRow.append(i+1, itemList[i], "INSERT PICTURE", quantityList[i], priceList[i], quantityList[i] * priceList[i])
+        totalPrice += int(quantityList[i]) * int(priceList[i])
+        dataRow.extend([i+1, itemList[i], "INSERT PICTURE", quantityList[i], priceList[i], int(quantityList[i]) * int(priceList[i])])
         data.append(dataRow)
 
     # Populate the header row
