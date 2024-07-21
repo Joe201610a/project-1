@@ -22,85 +22,45 @@ def set_font(cell, font_name='Calibri (Body)', font_size=14):
             r = run._element
             r.rPr.rFonts.set(qn('w:eastAsia'), font_name)
 
-# Create a new Document
-doc = Document()
+# Get the directory of the current script
+script_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Add a title to the document
-doc.add_heading('Table Example', level=1)
-
-# Add a picture to the top right
-picture_path = r'C:\Users\Joe201610a\Downloads\project-1-main\project-1-main\Untitled.png'  # Correct path
+# Construct the path to the image
+picture_path = os.path.join(script_dir, 'Images', 'image.png')  # Access the images folder and image.png
 
 # Check if the image path is valid
 if not os.path.exists(picture_path):
     print("The specified image path does not exist.")
 else:
+    # Create a new Document
+    doc = Document()
+    
+    # Add a title to the document
+    doc.add_heading('Table Example', level=1)
+
+    # Add a picture to the top right
     doc.add_picture(picture_path, width=Inches(1.5))
     last_paragraph = doc.paragraphs[-1]
     last_paragraph.alignment = 2  # Right alignment
 
-# Create a table with 1 header row and 3 data rows, each with 6 columns
-table = doc.add_table(rows=4, cols=6)
+    # Create a table with 1 header row and 3 data rows, each with 6 columns
+    table = doc.add_table(rows=4, cols=6)
 
-# Define headers and data
-headers = ["SN", "Model And Describtion", "layout", "Q", "Unit price", "Total price"]
+    # Define headers and data
+    headers = ["Header 1", "Header 2", "Header 3", "Header 4", "Header 5", "Header 6"]
+    data = [
+        ["Row 1, Col 1", "Row 1, Col 2", "Row 1, Col 3", "Row 1, Col 4", "Row 1, Col 5", "Row 1, Col 6"],
+        ["Row 2, Col 1", "Row 2, Col 2", "Row 2, Col 3", "Row 2, Col 4", "Row 2, Col 5", "Row 2, Col 6"],
+        ["Row 3, Col 1", "Row 3, Col 2", "Row 3, Col 3", "Row 3, Col 4", "Row 3, Col 5", "Row 3, Col 6"]
+    ]
 
-itemList = []
-quantityList = []
-priceList = []
-
-with open('requested-data.txt', 'r') as names:
-    for line in names:
-        itemList.append(line.strip())
-itemList = itemList[1:]
-customerName = itemList[len(itemList)-1]
-itemList = itemList[:-1]
-
-with open('requested-quantity.txt', 'r') as quantity:
-    for line in quantity:
-        quantityList.append(line.strip())
-quantityList = quantityList[1:]
-
-with open('requested-prices.txt', 'r') as prices:
-    for line in prices:
-        priceList.append(line.strip())
-priceList = priceList[1:]
-
-data = []
-totalPrice = 0
-
-for i in range(len(itemList)):
-    dataRow = []
-    totalPrice += quantityList[i] * priceList[i]
-    dataRow.append(i+1, itemList[i], "INSERT PICTURE", quantityList[i], priceList[i], quantityList[i] * priceList[i])
-    data.append(dataRow)
-
-# Populate the header row
-header_row = table.rows[0]
-for col_idx, header in enumerate(headers):
-    cell = header_row.cells[col_idx]
-    cell.text = header
-    
-    # Set borders for the header cell
-    set_cell_border(
-        cell,
-        top={"sz": 12, "val": "single", "color": "000000"},
-        bottom={"sz": 12, "val": "single", "color": "000000"},
-        start={"sz": 12, "val": "single", "color": "000000"},
-        end={"sz": 12, "val": "single", "color": "000000"}
-    )
-
-    # Set font for the header cell
-    set_font(cell, font_name='Calibri (Body)', font_size=14)
-
-# Populate the data rows
-for row_idx, row_data in enumerate(data, start=1):
-    row = table.rows[row_idx]
-    for col_idx, cell_data in enumerate(row_data):
-        cell = row.cells[col_idx]
-        cell.text = cell_data
+    # Populate the header row
+    header_row = table.rows[0]
+    for col_idx, header in enumerate(headers):
+        cell = header_row.cells[col_idx]
+        cell.text = header
         
-        # Set borders for the data cell
+        # Set borders for the header cell
         set_cell_border(
             cell,
             top={"sz": 12, "val": "single", "color": "000000"},
@@ -109,7 +69,26 @@ for row_idx, row_data in enumerate(data, start=1):
             end={"sz": 12, "val": "single", "color": "000000"}
         )
 
-# Save the document
-doc.save('table_with_header_and_picture.docx')
+        # Set font for the header cell
+        set_font(cell, font_name='Calibri (Body)', font_size=14)
 
-print("Document created successfully!")
+    # Populate the data rows
+    for row_idx, row_data in enumerate(data, start=1):
+        row = table.rows[row_idx]
+        for col_idx, cell_data in enumerate(row_data):
+            cell = row.cells[col_idx]
+            cell.text = cell_data
+            
+            # Set borders for the data cell
+            set_cell_border(
+                cell,
+                top={"sz": 12, "val": "single", "color": "000000"},
+                bottom={"sz": 12, "val": "single", "color": "000000"},
+                start={"sz": 12, "val": "single", "color": "000000"},
+                end={"sz": 12, "val": "single", "color": "000000"}
+            )
+
+    # Save the document
+    doc.save('table_with_header_and_picture.docx')
+
+    print("Document created successfully!")
