@@ -26,7 +26,7 @@ def set_font(cell, font_name='Calibri (Body)', font_size=14):
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Construct the path to the image
-picture_path = os.path.join(script_dir, 'images', 'image.png')  # Access the images folder and image.png
+picture_path = os.path.join(script_dir, 'Images', 'image.png')  # Access the images folder and image.png
 
 # Check if the image path is valid
 if not os.path.exists(picture_path):
@@ -47,34 +47,32 @@ else:
     table = doc.add_table(rows=4, cols=6)
 
     # Define headers and data
-    
-    # Define headers and data
     headers = ["SN", "Model And Describtion", "layout", "Q", "Unit price", "Total price"]
-    
+
     itemList = []
     quantityList = []
     priceList = []
-    
+
     with open('requested-data.txt', 'r') as names:
         for line in names:
             itemList.append(line.strip())
     itemList = itemList[1:]
     customerName = itemList[len(itemList)-1]
     itemList = itemList[:-1]
-    
+
     with open('requested-quantity.txt', 'r') as quantity:
         for line in quantity:
             quantityList.append(line.strip())
     quantityList = quantityList[1:]
-    
+
     with open('requested-prices.txt', 'r') as prices:
         for line in prices:
             priceList.append(line.strip())
     priceList = priceList[1:]
-    
+
     data = []
     totalPrice = 0
-    
+
     for i in range(len(itemList)):
         dataRow = []
         totalPrice += int(quantityList[i]) * int(priceList[i])
@@ -104,7 +102,7 @@ else:
         row = table.rows[row_idx]
         for col_idx, cell_data in enumerate(row_data):
             cell = row.cells[col_idx]
-            cell.text = cell_data
+            cell.text = str(cell_data)
             
             # Set borders for the data cell
             set_cell_border(
